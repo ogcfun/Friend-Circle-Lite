@@ -37,7 +37,7 @@ jobs:
     - name: Download last_articles.json artifact
       uses: dawidd6/action-download-artifact@v6
       with:
-        github_token: ${{secrets.GIT_TOKEN}}
+        github_token: ${{secrets.GITHUB_TOKEN}}
         branch: main
         name: 'last_articles'
         path: './rss_subscribe'
@@ -64,8 +64,6 @@ jobs:
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
     - name: Commit changes
-      env:
-        GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
       run: |
         mkdir pages
         cp -r main ./static/index.html ./static/readme.md ./static/favicon.ico ./static/bg-light.webp ./static/bg-dark.webp all.json errors.json pages/
@@ -73,10 +71,8 @@ jobs:
         git init
         git add .
         git commit -m "⏱️ $(date +"%Y年%m月%d日-%H时%M分") GitHub Actions定时更新"
-        git remote add origin https://x-access-token:${GIT_TOKEN}@github.com/${{ github.repository }}.git
-        git push --force origin HEAD:page
+        git push --force https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:page
 
-        
     - name: Delete Workflow Runs
       uses: Mattraks/delete-workflow-runs@v2
       with:
