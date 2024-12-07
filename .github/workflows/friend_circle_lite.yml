@@ -1,3 +1,6 @@
+permissions:
+  contents: write
+  
 name: Friend Circle Lite
 
 on:
@@ -71,8 +74,9 @@ jobs:
         git init
         git add .
         git commit -m "⏱️ $(date +"%Y年%m月%d日-%H时%M分") GitHub Actions定时更新"
-        git push --force https://x-access-token:${{ secrets.GIT_TOKEN }}@github.com/${{ github.repository }}.git HEAD:page
-
+        git remote add origin https://x-access-token:${GIT_TOKEN}@github.com/${{ github.repository }}.git
+        git push --force origin HEAD:page
+        
     - name: Delete Workflow Runs
       uses: Mattraks/delete-workflow-runs@v2
       with:
